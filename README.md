@@ -1,68 +1,102 @@
-# 🎬 Universal Note Extractor
+🎓 Universal Note Extractor
+Turn videos, audio, PDFs, images, or plain text into clean, structured notes in one click, powered by Whisper and LLaMA 3.3 70B.
 
-Turn video, audio, PDFs, images, or plain text/URLs into clean, structured notes — powered by Groq (Whisper for transcription, LLaMA/GPT-OSS for note generation).
+Python Streamlit Groq Whisper License
 
-## Features
+Report a Bug
 
-- **Five input types** — YouTube link, uploaded video/audio, PDF, image (OCR), or pasted text/URL
-- **Three note detail levels** — Brief, Standard, Detailed, each controlling how much depth the notes go into
-- **Topic-first structure** — notes are organized as:
-  1. **Topic Notes** — the source content broken into its own topics, each as a sub-heading with detailed bullets
-  2. **Key Points** — a flat list of the most important takeaways across all topics
-  3. **Summary** — a short overview, last
-- **Optional flowchart** — auto-generated (via Mermaid) only when the content actually describes a step-by-step process; skipped otherwise
-- **Optional concept map** — auto-generated (via Mermaid) only when the content has related ideas worth mapping; skipped otherwise
-- **Optional topic images** — pulls one relevant photo per topic from the Pexels API
-- **Long-document handling** — automatically chunks and condenses very long transcripts/documents via map-reduce summarization to stay within API rate limits
-- **History sidebar** — the last 50 generated notes are saved locally and browsable from the sidebar
-- **Download as Markdown** — export any generated notes as a `.md` file
+Home
 
-## Tech Stack
+📌 Overview
+Revising from long lectures, tutorials, and documents is slow. Universal Note Extractor accepts content from five input types, converts it to text, and uses LLaMA 3.3 70B (via Groq) to generate structured, easy-to-revise notes. Long content is processed section by section, so notes cover the full material and not just the beginning.
 
-- **UI**: Streamlit
-- **Transcription**: Groq Whisper (`whisper-large-v3`)
-- **Note generation**: Groq LLaMA/GPT-OSS (`openai/gpt-oss-120b`)
-- **Diagrams**: Mermaid.js (rendered via CDN, no extra dependency)
-- **Images**: Pexels API
-- **PDF/OCR**: pypdf, pdf2image, pytesseract
-- **YouTube audio**: yt-dlp
+✨ Key Features
+🎥 Five input types: YouTube link, video/audio upload, PDF, image, and text or URL
+🗣️ Accurate transcription of speech using OpenAI Whisper
+🎚️ Adjustable detail level: Brief, Standard, or Detailed notes
+🔀 Optional flowchart to visualise processes
+🧠 Optional concept map to show how ideas connect
+🖼️ Optional topic images to enrich the notes
+📚 Long-document handling: content is split into sections and processed fully
+📜 History sidebar to revisit previously generated notes
+⚡ Fast inference thanks to the Groq API
+🖼️ Screenshots
+Choose an input type, detail level, and extras
 
-## Setup
+Input screen
 
-1. Clone the repo and create a virtual environment:
-   ```
-   git clone https://github.com/zananyagupta25-afk/video-note-extractor.git
-   cd video-note-extractor
-   python -m venv venv
-   venv\Scripts\activate      # Windows
-   source venv/bin/activate   # macOS/Linux
-   ```
+Notes generated from a YouTube lecture
 
-2. Install dependencies:
-   ```
-   pip install -r requirements.txt
-   ```
+Extraction
 
-3. Create a `.env` file in the project root:
-   ```
-   GROQ_API_KEY=your_groq_key_here
-   PEXELS_API_KEY=your_pexels_key_here
-   ```
-   - Get a free Groq key at https://console.groq.com/keys
-   - Get a free Pexels key at https://www.pexels.com/api/ (only needed if you want topic images — the app runs fine without it, that feature just stays off)
+Structured output with headings and key points
 
-4. Run the app:
-   ```
-   streamlit run app.py
-   ```
+Notes output
 
-## Usage
+🏗️ How It Works
+Architecture
 
-1. Pick an input type and choose your note detail level (Brief / Standard / Detailed).
-2. Optionally tick **Add flowchart**, **Add concept map**, and/or **Add topic images**.
-3. Provide your source (link, file, or text) and click **Extract Notes**.
-4. Review the generated notes, diagrams, and images, then download the notes as Markdown if needed.
+Input: the user picks a source (YouTube, video/audio, PDF, image, or text/URL).
+Extraction: Whisper transcribes audio and video; PDFs, images, and text are parsed into plain text.
+Chunking: long content is split into sections so nothing is skipped.
+Generation: LLaMA 3.3 70B writes structured notes at the chosen detail level, with optional flowchart, concept map, and images.
+Output: notes are displayed in the Streamlit app and saved to history.
+🧰 Tech Stack
+Layer	Tools
+Language	Python
+LLM	LLaMA 3.3 70B via Groq API
+Speech-to-Text	OpenAI Whisper
+Frontend	Streamlit
+Version Control	Git, GitHub
+📁 Project Structure
+video-note-extractor/
+├── app.py
+├── requirements.txt
+├── .env.example
+├── assets/
+│   ├── home.png
+│   ├── extraction.png
+│   ├── notes.png
+│   └── architecture.png
+└── README.md
+Add your other source files here to match the real repo.
 
-## Notes on rate limits
+🚀 Getting Started
+Prerequisites
+Python 3.10+
+FFmpeg installed and on your PATH
+A free Groq API key
+Installation
+git clone https://github.com/zananyagupta25-afk/video-note-extractor.git
+cd video-note-extractor
+python -m venv venv
+venv\Scripts\activate          # Mac/Linux: source venv/bin/activate
+pip install -r requirements.txt
+Configuration
+Create a .env file in the project root:
 
-Long documents are automatically chunked and condensed before the final note-generation call to stay within Groq's free-tier rate limits. Diagram and image generation each add one extra API call per option enabled, so enabling all three roughly triples the calls used per note.
+GROQ_API_KEY=your_api_key_here
+Run
+streamlit run app.py
+Open http://localhost:8501 in your browser.
+
+📖 Usage
+Select an input type.
+Choose the note detail level: Brief, Standard, or Detailed.
+Optionally tick Add flowchart, Add concept map, or Add topic images.
+Paste a link or upload a file, then click Extract Notes.
+Read your notes, or reopen older ones from the History sidebar.
+🧗 Challenges and Learnings
+Unifying five input formats into one clean text pipeline.
+Handling long content that exceeds the model's context limit by processing it in sections.
+Deployment: moved the interface to Streamlit for simple hosting and a smoother experience.
+🔮 Future Improvements
+[ ] Question-answering over the generated notes
+[ ] Export notes to PDF / Markdown
+[ ] Multi-language transcription and translation
+[ ] Timestamped notes linking back to the video
+👩‍💻 Author
+Ananya Gupta, B.Tech AI & ML LinkedIn · GitHub
+
+📄 License
+This project is open source under the MIT License.
